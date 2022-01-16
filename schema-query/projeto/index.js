@@ -13,16 +13,42 @@ type Usuario {
     vip: Boolean
 }
 
+
+type Produto {
+    id: ID!
+    nome: String!
+    preco: Float!
+    desconto: Float
+    precoComDesconto: Float
+}
+
 # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
 type Query {
     ola: String!
     horaAtual: Date
     usuarioLogado: Usuario
+    produtoEmDestaque: Produto
 }
 `;
 
 const resolvers = {
+    Usuario: {
+        salario(usuario) {
+            return usuario.salarioReal
+        }
+    },
+
+    Produto: {
+        precoComDesconto(obj) {
+            if(obj.desconto) {
+                return obj.preco - (obj.preco * obj.desconto)
+            }
+
+            return obj.preco
+        }
+    },
+
     Query: {
         ola() {
             return "Basta Retornar uma string"
@@ -32,6 +58,15 @@ const resolvers = {
             return `${new Date()}`
         },
 
+        produtoEmDestaque(){
+            return {
+                id: 1,
+                nome: "Notebook Dell G15 16 GB AMD Ryzen 7 5800H Geforce RTX 3060",
+                preco: 9600.00,
+                desconto: 0.5
+            }
+        },
+
         usuarioLogado() {
             return {
                 id: 1,
@@ -39,7 +74,7 @@ const resolvers = {
                 email: "emily@example.com",
                 idade: 20,
                 vip: true,
-                salario: 2500
+                salarioReal: 2500
             }
         }
     }
