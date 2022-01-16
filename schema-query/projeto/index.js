@@ -1,11 +1,14 @@
 const {ApolloServer, gql} = require('apollo-server')
 
 const typeDefs = gql`
+
+scalar Date 
+
 # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
 type Query {
     ola: String!
-    horaAtual: String
+    horaAtual: Date
 }
 `;
 
