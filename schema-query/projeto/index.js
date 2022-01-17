@@ -69,7 +69,9 @@ const resolvers = {
         },
 
         numerosMegaSena() {
-            return [10,44, 55, 63, 88, 84]
+            return Array(6).fill(0)
+                .map(_ => parseInt(Math.random() * 60 + 1))
+                .sort((a,b) => a - b)
         },
 
         usuarioLogado() {
