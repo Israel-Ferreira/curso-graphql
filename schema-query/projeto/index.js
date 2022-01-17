@@ -29,6 +29,7 @@ type Query {
     horaAtual: Date
     usuarioLogado: Usuario
     produtoEmDestaque: Produto
+    numerosMegaSena: [Int!]!
 }
 `;
 
@@ -65,6 +66,10 @@ const resolvers = {
                 preco: 9600.00,
                 desconto: 0.5
             }
+        },
+
+        numerosMegaSena() {
+            return [10,44, 55, 63, 88, 84]
         },
 
         usuarioLogado() {
