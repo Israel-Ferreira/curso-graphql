@@ -1,5 +1,18 @@
 const {ApolloServer, gql} = require('apollo-server')
 
+
+const usuarios = [
+    {id: 1, nome: "Israel Souza", email: "israel@example.com", salario: 4000, idade: 22},
+    {id: 2, nome: "Matheus Faria", email: "matheusf@example.com", salario: 5000, idade: 25},
+    {id: 3, nome: "Gileade Trindade", email: "gileadet@example.com", salario: 6500, idade: 30 }
+]
+
+
+const perfis = [
+    {id: 1, nome: "Comum"},
+    {id: 2, nome: "Administrador"}
+]
+
 const typeDefs = gql`
 
 scalar Date 
@@ -13,9 +26,14 @@ type Usuario {
     vip: Boolean
 }
 
+type Perfil {
+    id: Int!
+    nome: String!
+}
+
 
 type Produto {
-    id: ID!
+    id: Int!
     nome: String!
     preco: Float!
     desconto: Float
@@ -30,6 +48,10 @@ type Query {
     usuarioLogado: Usuario
     produtoEmDestaque: Produto
     numerosMegaSena: [Int!]!
+    usuarios: [Usuario]!
+    usuario(id: Int): Usuario
+    perfis: [Perfil]!
+    perfil(id: Int): Perfil
 }
 `;
 
@@ -59,6 +81,17 @@ const resolvers = {
             return `${new Date()}`
         },
 
+
+        usuario(_, args){
+            const selecionados = usuarios.filter(usuario => usuario.id === args.id)
+            return selecionados ? selecionados[0] : null
+        },
+
+
+        usuarios() {
+            return usuarios
+        },
+
         produtoEmDestaque(){
             return {
                 id: 1,
@@ -66,6 +99,17 @@ const resolvers = {
                 preco: 9600.00,
                 desconto: 0.5
             }
+        },
+
+
+        perfis() {
+            return perfis
+        },
+
+
+        perfil(_, {id}) {
+            let profiles = perfis.filter(prfl => prfl.id === id)
+            return profiles ? profiles[0] : null
         },
 
         numerosMegaSena() {
