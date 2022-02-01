@@ -1,60 +1,28 @@
-const {ApolloServer, gql} = require('apollo-server')
+const { ApolloServer, gql } = require('apollo-server')
+
+
+const { loadTypedefsSync, loadSchemaSync } = require('@graphql-tools/load')
+const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader')
+
+const { join } = require('path')
+const { makeExecutableSchema } = require('@graphql-tools/schema')
 
 
 const usuarios = [
-    {id: 1, nome: "Israel Souza", email: "israel@example.com", salario: 4000, idade: 22, perfilId: 1},
-    {id: 2, nome: "Matheus Faria", email: "matheusf@example.com", salario: 5000, idade: 25, perfilId: 2},
-    {id: 3, nome: "Gileade Trindade", email: "gileadet@example.com", salario: 6500, idade: 30, perfilId: 1 }
+    { id: 1, nome: "Israel Souza", email: "israel@example.com", salario: 4000, idade: 22, perfilId: 1 },
+    { id: 2, nome: "Matheus Faria", email: "matheusf@example.com", salario: 5000, idade: 25, perfilId: 2 },
+    { id: 3, nome: "Gileade Trindade", email: "gileadet@example.com", salario: 6500, idade: 30, perfilId: 1 }
 ]
 
 
 const perfis = [
-    {id: 1, nome: "Comum"},
-    {id: 2, nome: "Administrador"}
+    { id: 1, nome: "Comum" },
+    { id: 2, nome: "Administrador" }
 ]
 
-const typeDefs = gql`
-
-scalar Date 
-
-type Usuario {
-    id: ID!
-    nome: String!
-    email: String!
-    idade: Int
-    salario: Float
-    vip: Boolean
-    perfil: Perfil
-}
-
-type Perfil {
-    id: Int!
-    nome: String!
-}
-
-
-type Produto {
-    id: Int!
-    nome: String!
-    preco: Float!
-    desconto: Float
-    precoComDesconto: Float
-}
-
-# Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
-
-type Query {
-    ola: String!
-    horaAtual: Date
-    usuarioLogado: Usuario
-    produtoEmDestaque: Produto
-    numerosMegaSena: [Int!]!
-    usuarios: [Usuario]!
-    usuario(id: Int): Usuario
-    perfis: [Perfil]!
-    perfil(id: Int): Perfil
-}
-`;
+const typeDefs = loadSchemaSync("./**/*.graphql", { 
+    loaders: [new GraphQLFileLoader()]
+})
 
 const resolvers = {
     Usuario: {
@@ -63,7 +31,7 @@ const resolvers = {
         },
 
 
-        perfil(usuario){
+        perfil(usuario) {
             const profiles = perfis.filter(prf => prf.id === usuario.perfilId)
             return profiles ? profiles[0] : null
         }
@@ -74,7 +42,7 @@ const resolvers = {
 
     Produto: {
         precoComDesconto(obj) {
-            if(obj.desconto) {
+            if (obj.desconto) {
                 return obj.preco - (obj.preco * obj.desconto)
             }
 
@@ -92,7 +60,7 @@ const resolvers = {
         },
 
 
-        usuario(_, args){
+        usuario(_, args) {
             const selecionados = usuarios.filter(usuario => usuario.id === args.id)
             return selecionados ? selecionados[0] : null
         },
@@ -102,7 +70,7 @@ const resolvers = {
             return usuarios
         },
 
-        produtoEmDestaque(){
+        produtoEmDestaque() {
             return {
                 id: 1,
                 nome: "Notebook Dell G15 16 GB AMD Ryzen 7 5800H Geforce RTX 3060",
@@ -117,7 +85,7 @@ const resolvers = {
         },
 
 
-        perfil(_, {id}) {
+        perfil(_, { id }) {
             let profiles = perfis.filter(prfl => prfl.id === id)
             return profiles ? profiles[0] : null
         },
@@ -125,7 +93,7 @@ const resolvers = {
         numerosMegaSena() {
             return Array(6).fill(0)
                 .map(_ => parseInt(Math.random() * 60 + 1))
-                .sort((a,b) => a - b)
+                .sort((a, b) => a - b)
         },
 
         usuarioLogado() {
@@ -142,8 +110,14 @@ const resolvers = {
 }
 
 
-const server = new ApolloServer({typeDefs, resolvers})
 
-server.listen().then(({url}) => {
+const schema = makeExecutableSchema({typeDefs, resolvers})
+
+
+
+
+const server = new ApolloServer({ schema })
+
+server.listen().then(({ url }) => {
     console.log(`Server ready at ${url}`)
 })

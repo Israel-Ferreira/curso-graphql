@@ -1,0 +1,16 @@
+#import Usuario, Perfil from 'Usuario.graphql'
+#import Produto from 'Produto.graphql'
+
+scalar Date 
+
+type Query {
+    ola: String!
+    horaAtual: Date
+    usuarioLogado: Usuario
+    produtoEmDestaque: Produto
+    numerosMegaSena: [Int!]!
+    usuarios: [Usuario]!
+    usuario(id: Int): Usuario
+    perfis: [Perfil]!
+    perfil(id: Int): Perfil
+}
