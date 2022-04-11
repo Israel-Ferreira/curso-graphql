@@ -1,0 +1,11 @@
+#import Usuario, Perfil from 'Usuario.graphql'
+#import Produto from 'Produto.graphql'
+
+scalar Date 
+
+type Query {
+    usuarios: [Usuario]!
+    usuario(id: Int): Usuario
+    perfis: [Perfil]!
+    perfil(id: Int): Perfil
+}
