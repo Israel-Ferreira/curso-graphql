@@ -1,0 +1,5 @@
+#import Usuario, Perfil from 'Usuario.graphql'
+
+type Mutation {
+    novoUsuario(nome: String, email: String, idade: Int ): Usuario!
+}
