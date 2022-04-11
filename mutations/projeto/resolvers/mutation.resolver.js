@@ -1,12 +1,12 @@
-const {usuarios, proximoId, perfis} = require('../data/db')
+const { usuarios, proximoId, perfis } = require('../data/db')
 
 module.exports = {
-    novoUsuario(_, {nome, email, idade}) {
+    novoUsuario(_, { nome, email, idade }) {
 
-        const emailIsUsed =  usuarios.some(user => user.email === email)
+        const emailIsUsed = usuarios.some(user => user.email === email)
 
 
-        if(emailIsUsed) {
+        if (emailIsUsed) {
             throw new Error("E-mail já existente")
         }
 
@@ -22,16 +22,35 @@ module.exports = {
 
         return user
     },
-    
-    excluirUsuario(_, {id}){
-        const index =  usuarios.findIndex(user => user.id === id)
 
-        if(index === -1){
+    excluirUsuario(_, { id }) {
+        const index = usuarios.findIndex(user => user.id === id)
+
+        if (index === -1) {
             throw new Error("Erro: Usuário não encontrado")
         }
-        
+
         const excluido = usuarios.splice(index, 1)
-        
+
         return excluido ? excluido[0] : null
+    },
+
+    alterarUsuario(_, args) {
+        const { id } = args
+
+        const index = usuarios.findIndex(user => user.id === id)
+
+        if (index < 0) {
+            throw new Error("Erro: Usuário não encontrado")
+        }
+
+        const user = {
+            ...usuarios[index],
+            ...args
+        }
+
+        usuarios.splice(index, 1, user)
+
+        return user
     }
 }
