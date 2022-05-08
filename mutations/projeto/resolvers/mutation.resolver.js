@@ -53,10 +53,9 @@ module.exports = {
         return excluido ? excluido[0] : null
     },
 
-    alterarUsuario(_, args) {
-        const { id } = args
-
-        const index = usuarios.findIndex(user => user.id === id)
+    alterarUsuario(_, {filtro, dados}) {
+    
+        const index = indiceUsuario(filtro)
 
         if (index < 0) {
             throw new Error("Erro: Usuário não encontrado")
@@ -64,7 +63,7 @@ module.exports = {
 
         const user = {
             ...usuarios[index],
-            ...args
+            ...dados
         }
 
         usuarios.splice(index, 1, user)
