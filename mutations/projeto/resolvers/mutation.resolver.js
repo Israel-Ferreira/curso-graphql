@@ -1,7 +1,9 @@
 const { usuarios, proximoId, perfis } = require('../data/db')
 
 module.exports = {
-    novoUsuario(_, { nome, email, idade }) {
+    novoUsuario(_, { dados}) {
+
+        const {nome, idade, email} = dados
 
         const emailIsUsed = usuarios.some(user => user.email === email)
 
