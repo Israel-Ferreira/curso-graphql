@@ -1,6 +1,6 @@
 const queryResolver = require('./query.resolver')
 const usuarioResolver = require('./usuario.resolver')
-const mutationResolver = require('./mutation.resolver')
+const mutationResolver = require('./mutations')
 
 
 module.exports = {
