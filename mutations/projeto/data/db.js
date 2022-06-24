@@ -12,10 +12,17 @@ const usuarios = [
 ]
 
 
+let perfilId = 3;
+
+
+function proximoPerfilId() {
+    return perfilId++
+}
+
 const perfis = [
     { id: 1, nome: "Comum" },
     { id: 2, nome: "Administrador" }
 ]
 
 
-module.exports = {usuarios, perfis, proximoId}
+module.exports = {usuarios, perfis, proximoId, proximoPerfilId}

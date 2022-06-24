@@ -1,7 +1,11 @@
-#import Usuario, Perfil, UsuarioInput, UsuarioFiltro from 'Usuario.graphql'
+#import Usuario, Perfil, UsuarioInput, UsuarioFiltro, NovoPerfil, PerfilFiltro from 'Usuario.graphql'
 
 type Mutation {
     novoUsuario(dados: UsuarioInput!): Usuario!
     excluirUsuario(filtro: UsuarioFiltro!): Usuario
     alterarUsuario(filtro: UsuarioFiltro!, dados: UsuarioInput!): Usuario
+
+    adicionarPerfil(dados: NovoPerfil!): Perfil
+    alterarPerfil(filtro: PerfilFiltro!, dados: NovoPerfil!): Perfil
+    excluirPerfil(filtro: PerfilFiltro!): Perfil
 }
