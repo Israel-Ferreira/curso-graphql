@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_DATABASE=graphql-db
+      - MYSQL_USER=graphqldb-user
+      - MYSQL_PASSWORD=graphql1234
+
+    ports:
+      - 15336:3306
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  
