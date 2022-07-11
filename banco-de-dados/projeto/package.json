@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "knex": "^2.1.0",
-    "mysql": "^2.18.1"
+    "mysql2": "^2.3.3"
   }
 }

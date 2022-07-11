@@ -4,11 +4,13 @@
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 module.exports = {
-  client: 'mysql',
+  client: 'mysql2',
   connection: {
+    host: '127.0.0.1',
+    port: 15336,
     database: 'graphql-db',
     user:     'graphqldb-user',
-    password: 'graphql123'
+    password: 'graphql1234',
   },
   pool: {
     min: 2,
